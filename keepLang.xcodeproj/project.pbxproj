@@ -11,7 +11,33 @@
 		502999262A5F371100F395A2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502999252A5F371100F395A2 /* ContentView.swift */; };
 		502999282A5F371300F395A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 502999272A5F371300F395A2 /* Assets.xcassets */; };
 		5029992B2A5F371300F395A2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5029992A2A5F371300F395A2 /* Preview Assets.xcassets */; };
+		502999382A5F374600F395A2 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502999372A5F374600F395A2 /* KeyboardViewController.swift */; };
+		5029993C2A5F374600F395A2 /* keepLangKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 502999352A5F374600F395A2 /* keepLangKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5029993A2A5F374600F395A2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 502999182A5F371100F395A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 502999342A5F374600F395A2;
+			remoteInfo = keepLangKeyboard;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		502999402A5F374600F395A2 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5029993C2A5F374600F395A2 /* keepLangKeyboard.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		502999202A5F371100F395A2 /* keepLang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = keepLang.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -19,10 +45,20 @@
 		502999252A5F371100F395A2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		502999272A5F371300F395A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5029992A2A5F371300F395A2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		502999352A5F374600F395A2 /* keepLangKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keepLangKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		502999372A5F374600F395A2 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
+		502999392A5F374600F395A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5029991D2A5F371100F395A2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		502999322A5F374600F395A2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -36,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				502999222A5F371100F395A2 /* keepLang */,
+				502999362A5F374600F395A2 /* keepLangKeyboard */,
 				502999212A5F371100F395A2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -44,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				502999202A5F371100F395A2 /* keepLang.app */,
+				502999352A5F374600F395A2 /* keepLangKeyboard.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,6 +105,15 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		502999362A5F374600F395A2 /* keepLangKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				502999372A5F374600F395A2 /* KeyboardViewController.swift */,
+				502999392A5F374600F395A2 /* Info.plist */,
+			);
+			path = keepLangKeyboard;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -77,15 +124,34 @@
 				5029991C2A5F371100F395A2 /* Sources */,
 				5029991D2A5F371100F395A2 /* Frameworks */,
 				5029991E2A5F371100F395A2 /* Resources */,
+				502999402A5F374600F395A2 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5029993B2A5F374600F395A2 /* PBXTargetDependency */,
 			);
 			name = keepLang;
 			productName = keepLang;
 			productReference = 502999202A5F371100F395A2 /* keepLang.app */;
 			productType = "com.apple.product-type.application";
+		};
+		502999342A5F374600F395A2 /* keepLangKeyboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5029993D2A5F374600F395A2 /* Build configuration list for PBXNativeTarget "keepLangKeyboard" */;
+			buildPhases = (
+				502999312A5F374600F395A2 /* Sources */,
+				502999322A5F374600F395A2 /* Frameworks */,
+				502999332A5F374600F395A2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = keepLangKeyboard;
+			productName = keepLangKeyboard;
+			productReference = 502999352A5F374600F395A2 /* keepLangKeyboard.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -98,6 +164,9 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					5029991F2A5F371100F395A2 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+					502999342A5F374600F395A2 = {
 						CreatedOnToolsVersion = 14.3.1;
 					};
 				};
@@ -116,6 +185,7 @@
 			projectRoot = "";
 			targets = (
 				5029991F2A5F371100F395A2 /* keepLang */,
+				502999342A5F374600F395A2 /* keepLangKeyboard */,
 			);
 		};
 /* End PBXProject section */
@@ -127,6 +197,13 @@
 			files = (
 				5029992B2A5F371300F395A2 /* Preview Assets.xcassets in Resources */,
 				502999282A5F371300F395A2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		502999332A5F374600F395A2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,7 +219,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		502999312A5F374600F395A2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				502999382A5F374600F395A2 /* KeyboardViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5029993B2A5F374600F395A2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 502999342A5F374600F395A2 /* keepLangKeyboard */;
+			targetProxy = 5029993A2A5F374600F395A2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5029992C2A5F371300F395A2 /* Debug */ = {
@@ -262,6 +355,7 @@
 		5029992F2A5F371300F395A2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -291,6 +385,7 @@
 		502999302A5F371300F395A2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -317,6 +412,56 @@
 			};
 			name = Release;
 		};
+		5029993E2A5F374600F395A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NRTGJB9J65;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = keepLangKeyboard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = keepLangKeyboard;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Morphicode.keepLang.keepLangKeyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5029993F2A5F374600F395A2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NRTGJB9J65;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = keepLangKeyboard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = keepLangKeyboard;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Morphicode.keepLang.keepLangKeyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -334,6 +479,15 @@
 			buildConfigurations = (
 				5029992F2A5F371300F395A2 /* Debug */,
 				502999302A5F371300F395A2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5029993D2A5F374600F395A2 /* Build configuration list for PBXNativeTarget "keepLangKeyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5029993E2A5F374600F395A2 /* Debug */,
+				5029993F2A5F374600F395A2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
