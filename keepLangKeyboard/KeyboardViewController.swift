@@ -8,7 +8,7 @@ class KeyboardViewController: UIInputViewController {
         "QWERTYUIOP",
         "ASDFGHJKL",
         "ZXCVBNM"
-    ]
+    ].map { $0.lowercased() } // We start with lowercase English keyboard
 
     let hebrewAlphabets = [
         "קראטוןםפ",
@@ -20,6 +20,7 @@ class KeyboardViewController: UIInputViewController {
 
     var alphabets = [String]()
     var stackViews = [UIStackView]()
+    var shiftMode = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +49,11 @@ class KeyboardViewController: UIInputViewController {
             view.addSubview(stackView)
             stackViews.append(stackView)
         }
+
+        // Adding the shift button to the last row of letters
+        let shiftButton = createButton(title: "⇧")
+        shiftButton.addTarget(self, action: #selector(shiftPressed), for: .touchUpInside)
+        stackViews[stackViews.count - 1].insertArrangedSubview(shiftButton, at: 0)
 
         let numberStackView = createStackView(with: Array(numbers))
         view.addSubview(numberStackView)
@@ -132,6 +138,20 @@ class KeyboardViewController: UIInputViewController {
         setupKeyboard()
         setupConstraints()
     }
+
+    @objc func shiftPressed() {
+        shiftMode.toggle() // Switches between true and false each time it's pressed
+
+        // Update the characters of the alphabets
+        if shiftMode {
+            alphabets = alphabets.map { $0.uppercased() }
+        } else {
+            alphabets = alphabets.map { $0.lowercased() }
+        }
+
+        setupKeyboard()
+        setupConstraints()
+    }
 }
 
 //import UIKit
@@ -140,19 +160,44 @@ class KeyboardViewController: UIInputViewController {
 //
 //    @IBOutlet var nextKeyboardButton: UIButton!
 //
-//    let alphabets = [
+//    let englishAlphabets = [
 //        "QWERTYUIOP",
 //        "ASDFGHJKL",
 //        "ZXCVBNM"
 //    ]
+//
+//    let hebrewAlphabets = [
+//        "קראטוןםפ",
+//        "שדגכעיחלך",
+//        "זסבהנמצתץ"
+//    ]
+//
 //    let numbers = "1234567890"
+//
+//    var alphabets = [String]()
 //    var stackViews = [UIStackView]()
 //
 //    override func viewDidLoad() {
 //        super.viewDidLoad()
 //
+//        alphabets = englishAlphabets // Default to English keyboard
+//
 //        // Add this line to set a height constraint
 //        self.inputView?.addConstraint(NSLayoutConstraint(item: self.inputView!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 260))
+//
+//        setupKeyboard()
+//    }
+//
+//    override func updateViewConstraints() {
+//        setupConstraints()
+//        super.updateViewConstraints()
+//    }
+//
+//    func setupKeyboard() {
+//        for stackView in stackViews {
+//            stackView.removeFromSuperview()
+//        }
+//        stackViews.removeAll()
 //
 //        for row in alphabets {
 //            let stackView = createStackView(with: Array(row))
@@ -166,6 +211,11 @@ class KeyboardViewController: UIInputViewController {
 //
 //        let spaceReturnStackView = UIStackView()
 //        spaceReturnStackView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        let switchButton = createButton(title: "Switch")
+//        switchButton.addTarget(self, action: #selector(switchPressed), for: .touchUpInside)
+//        spaceReturnStackView.addArrangedSubview(switchButton)
+//
 //        let spaceButton = createButton(title: "Space")
 //        spaceButton.addTarget(self, action: #selector(spacePressed), for: .touchUpInside)
 //        spaceReturnStackView.addArrangedSubview(spaceButton)
@@ -176,11 +226,6 @@ class KeyboardViewController: UIInputViewController {
 //
 //        view.addSubview(spaceReturnStackView)
 //        stackViews.append(spaceReturnStackView)
-//    }
-//
-//    override func updateViewConstraints() {
-//        setupConstraints()
-//        super.updateViewConstraints()
 //    }
 //
 //    func setupConstraints() {
@@ -232,137 +277,15 @@ class KeyboardViewController: UIInputViewController {
 //    @objc func returnPressed() {
 //        (textDocumentProxy as UIKeyInput).insertText("\n")
 //    }
-//}
 //
-//import UIKit
-//
-//class KeyboardViewController: UIInputViewController {
-//
-//    @IBOutlet var nextKeyboardButton: UIButton!
-//
-//    let alphabets = [
-//        "QWERTYUIOP",
-//        "ASDFGHJKL",
-//        "ZXCVBNM"
-//    ]
-//    let numbers = "1234567890"
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        // Add this line to set a height constraint
-//        self.inputView?.addConstraint(NSLayoutConstraint(item: self.inputView!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 260))
-//
-//        let width = UIScreen.main.bounds.width
-//        let height = CGFloat(40.0)
-//
-//        var yPosition = CGFloat(20)
-//        for row in alphabets {
-//            let stackView = createStackView(with: Array(row), at: CGRect(x: 0, y: yPosition, width: width, height: height))
-//            view.addSubview(stackView)
-//            yPosition += height
-//        }
-//
-//        let numberStackView = createStackView(with: Array(numbers), at: CGRect(x: 0, y: yPosition, width: width, height: height))
-//        view.addSubview(numberStackView)
-//        yPosition += height
-//
-//        let spaceReturnStackView = UIStackView(frame: CGRect(x: 0, y: yPosition, width: width, height: height))
-//        let spaceButton = createButton(title: "Space")
-//        spaceButton.addTarget(self, action: #selector(spacePressed), for: .touchUpInside)
-//        spaceReturnStackView.addArrangedSubview(spaceButton)
-//
-//        let returnButton = createButton(title: "Return")
-//        returnButton.addTarget(self, action: #selector(returnPressed), for: .touchUpInside)
-//        spaceReturnStackView.addArrangedSubview(returnButton)
-//
-//        view.addSubview(spaceReturnStackView)
-//    }
-//
-//    func createStackView(with characters: [Character], at frame: CGRect) -> UIStackView {
-//        let stackView = UIStackView(frame: frame)
-//        stackView.distribution = .fillEqually
-//        for character in characters {
-//            let button = createButton(title: String(character))
-//            button.addTarget(self, action: #selector(keyPressed), for: .touchUpInside)
-//            stackView.addArrangedSubview(button)
-//        }
-//        return stackView
-//    }
-//
-//    func createButton(title: String) -> UIButton {
-//        let button = UIButton(type: .system)
-//        button.setTitle(title, for: [])
-//        button.sizeToFit()
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        return button
-//    }
-//
-//    @objc func keyPressed(_ sender: UIButton) {
-//        guard let key = sender.title(for: []) else { return }
-//        (textDocumentProxy as UIKeyInput).insertText("\(key)")
-//    }
-//
-//    @objc func spacePressed() {
-//        (textDocumentProxy as UIKeyInput).insertText(" ")
-//    }
-//
-//    @objc func returnPressed() {
-//        (textDocumentProxy as UIKeyInput).insertText("\n")
-//    }
-//}
-
-//import UIKit
-//
-//class KeyboardViewController: UIInputViewController {
-//
-//    @IBOutlet var nextKeyboardButton: UIButton!
-//
-//    override func updateViewConstraints() {
-//        super.updateViewConstraints()
-//
-//        // Add custom view sizing constraints here
-//    }
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//
-//        // Perform custom UI setup here
-//        self.nextKeyboardButton = UIButton(type: .system)
-//
-//        // Add this line to set a height constraint
-//        self.inputView?.addConstraint(NSLayoutConstraint(item: self.inputView!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 260))
-//
-//        self.nextKeyboardButton.setTitle(NSLocalizedString("Next Keyboard", comment: "Title for 'Next Keyboard' button"), for: [])
-//        self.nextKeyboardButton.sizeToFit()
-//        self.nextKeyboardButton.translatesAutoresizingMaskIntoConstraints = false
-//
-//        self.nextKeyboardButton.addTarget(self, action: #selector(handleInputModeList(from:with:)), for: .allTouchEvents)
-//
-//        self.view.addSubview(self.nextKeyboardButton)
-//
-//        self.nextKeyboardButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-//        self.nextKeyboardButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-//    }
-//
-//    override func viewWillLayoutSubviews() {
-//        self.nextKeyboardButton.isHidden = !self.needsInputModeSwitchKey
-//        super.viewWillLayoutSubviews()
-//    }
-//
-//    override func textWillChange(_ textInput: UITextInput?) {
-//        // The app is about to change the document's contents. Perform any preparation here.
-//    }
-//
-//    override func textDidChange(_ textInput: UITextInput?) {
-//        // The app has just changed the document's contents, the document context has been updated.
-//
-//        var textColor: UIColor
-//        let proxy = self.textDocumentProxy
-//        if proxy.keyboardAppearance == UIKeyboardAppearance.dark {
-//            textColor = UIColor.white
+//    @objc func switchPressed() {
+//        if alphabets == englishAlphabets {
+//            alphabets = hebrewAlphabets
 //        } else {
-//            textColor = UIColor.black
+//            alphabets = englishAlphabets
 //        }
-//        self.nextKeyboardButton.setTitleColor(textColor, for: [])
+//
+//        setupKeyboard()
+//        setupConstraints()
 //    }
 //}
