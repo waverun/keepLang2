@@ -82,7 +82,7 @@ class KeyboardViewController: UIInputViewController {
         for (index, stackView) in stackViews.enumerated() {
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            stackView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            stackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
 
             if index == 0 {
                 stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
