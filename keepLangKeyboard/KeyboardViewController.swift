@@ -76,9 +76,20 @@ class KeyboardViewController: UIInputViewController {
     func createButton(title: String) -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle(title, for: [])
+        button.backgroundColor = UIColor.white
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.layer.cornerRadius = 5
+        button.layer.masksToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }
+
+//    func createButton(title: String) -> UIButton {
+//        let button = UIButton(type: .system)
+//        button.setTitle(title, for: [])
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        return button
+//    }
 
     @objc func keyPressed(_ sender: UIButton) {
         guard let key = sender.title(for: []) else { return }
