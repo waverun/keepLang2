@@ -107,10 +107,10 @@ class KeyboardViewController: UIInputViewController {
             container.addSubview(button)
 
             NSLayoutConstraint.activate([
-                button.topAnchor.constraint(equalTo: container.topAnchor, constant: 8),
-                button.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -8),
-                button.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 6),
-                button.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -6)
+                button.topAnchor.constraint(equalTo: container.topAnchor, constant: 4),
+                button.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4),
+                button.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 4),
+                button.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -4)
             ])
 
             stackView.addArrangedSubview(container)
@@ -118,18 +118,6 @@ class KeyboardViewController: UIInputViewController {
 
         return stackView
     }
-
-//    func createStackView(with characters: [Character]) -> UIStackView {
-//        let stackView = UIStackView()
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
-//        stackView.distribution = .fillEqually
-//        for character in characters {
-//            let button = createButton(title: String(character))
-//            button.addTarget(self, action: #selector(keyPressed), for: .touchUpInside)
-//            stackView.addArrangedSubview(button)
-//        }
-//        return stackView
-//    }
 
     func createButton(title: String) -> UIButton {
         let button = UIButton(type: .system)
@@ -139,8 +127,23 @@ class KeyboardViewController: UIInputViewController {
         button.layer.cornerRadius = 5
         button.layer.masksToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
+
+        // Set a larger font size for the button title
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+
         return button
     }
+
+//    func createButton(title: String) -> UIButton {
+//        let button = UIButton(type: .system)
+//        button.setTitle(title, for: [])
+//        button.backgroundColor = UIColor.white
+//        button.setTitleColor(UIColor.black, for: .normal)
+//        button.layer.cornerRadius = 5
+//        button.layer.masksToBounds = true
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        return button
+//    }
 
     @objc func keyPressed(_ sender: UIButton) {
         guard let key = sender.title(for: []) else { return }
