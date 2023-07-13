@@ -64,18 +64,36 @@ class KeyboardViewController: UIInputViewController {
 
         let switchButton = createButton(title: "Switch")
         switchButton.addTarget(self, action: #selector(switchPressed), for: .touchUpInside)
-        spaceReturnStackView.addArrangedSubview(switchButton)
+//        spaceReturnStackView.addArrangedSubview(switchButton)
+        addButtonToStackView(button: switchButton, stackView: spaceReturnStackView)
 
         let spaceButton = createButton(title: "Space")
         spaceButton.addTarget(self, action: #selector(spacePressed), for: .touchUpInside)
-        spaceReturnStackView.addArrangedSubview(spaceButton)
+//        spaceReturnStackView.addArrangedSubview(spaceButton)
+        addButtonToStackView(button: spaceButton, stackView: spaceReturnStackView)
 
         let returnButton = createButton(title: "Return")
         returnButton.addTarget(self, action: #selector(returnPressed), for: .touchUpInside)
-        spaceReturnStackView.addArrangedSubview(returnButton)
+//        spaceReturnStackView.addArrangedSubview(returnButton)
+        addButtonToStackView(button: returnButton, stackView: spaceReturnStackView)
 
         view.addSubview(spaceReturnStackView)
         stackViews.append(spaceReturnStackView)
+    }
+
+    func addButtonToStackView(button: UIButton, stackView: UIStackView) {
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(button)
+
+        NSLayoutConstraint.activate([
+            button.topAnchor.constraint(equalTo: container.topAnchor, constant: 4),
+            button.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4),
+            button.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 4),
+            button.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -4)
+        ])
+
+        stackView.addArrangedSubview(container)
     }
 
     func setupConstraints() {
