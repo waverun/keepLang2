@@ -28,7 +28,7 @@ class KeyboardViewController: UIInputViewController {
         alphabets = englishAlphabets // Default to English keyboard
 
         // Add this line to set a height constraint
-        self.inputView?.addConstraint(NSLayoutConstraint(item: self.inputView!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 260))
+        self.inputView?.addConstraint(NSLayoutConstraint(item: self.inputView!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 270))
 
         setupKeyboard()
     }
@@ -162,7 +162,7 @@ class KeyboardViewController: UIInputViewController {
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6).isActive = true
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -6).isActive = true
             stackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-            
+
             if index == 0 {
                 stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
             } else {
