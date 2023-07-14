@@ -61,27 +61,55 @@ class KeyboardViewController: UIInputViewController {
 
         let spaceReturnStackView = UIStackView()
         spaceReturnStackView.translatesAutoresizingMaskIntoConstraints = false
+        spaceReturnStackView.distribution = .fill  // change the distribution
+        spaceReturnStackView.spacing = 6  // add spacing between buttons
 
         let switchButton = createButton(title: "Switch")
         switchButton.addTarget(self, action: #selector(switchPressed), for: .touchUpInside)
-//        spaceReturnStackView.addArrangedSubview(switchButton)
-        addButtonToStackView(button: switchButton, stackView: spaceReturnStackView)
+        switchButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)  // set high hugging priority
+        spaceReturnStackView.addArrangedSubview(switchButton)
 
         let spaceButton = createButton(title: "Space")
         spaceButton.addTarget(self, action: #selector(spacePressed), for: .touchUpInside)
-//        spaceReturnStackView.addArrangedSubview(spaceButton)
-        addButtonToStackView(button: spaceButton, stackView: spaceReturnStackView)
+        spaceButton.setContentHuggingPriority(.defaultLow, for: .horizontal)  // set low hugging priority
+        spaceReturnStackView.addArrangedSubview(spaceButton)
 
         let returnButton = createButton(title: "Return")
         returnButton.addTarget(self, action: #selector(returnPressed), for: .touchUpInside)
-//        spaceReturnStackView.addArrangedSubview(returnButton)
-        addButtonToStackView(button: returnButton, stackView: spaceReturnStackView)
+        returnButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)  // set high hugging priority
+        spaceReturnStackView.addArrangedSubview(returnButton)
 
         view.addSubview(spaceReturnStackView)
         stackViews.append(spaceReturnStackView)
+
+        let leadingConstraint = spaceReturnStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 6)
+        let trailingConstraint = spaceReturnStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -6)
+        NSLayoutConstraint.activate([leadingConstraint, trailingConstraint])
+
+//        let spaceReturnStackView = UIStackView()
+//        spaceReturnStackView.translatesAutoresizingMaskIntoConstraints = false
+//        spaceReturnStackView.distribution = .fill  // change the distribution
+//
+//        let switchButton = createButton(title: "Switch")
+//        switchButton.addTarget(self, action: #selector(switchPressed), for: .touchUpInside)
+//        switchButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)  // set high hugging priority
+//        spaceReturnStackView.addArrangedSubview(switchButton)
+//
+//        let spaceButton = createButton(title: "Space")
+//        spaceButton.addTarget(self, action: #selector(spacePressed), for: .touchUpInside)
+//        spaceButton.setContentHuggingPriority(.defaultLow, for: .horizontal)  // set low hugging priority
+//        spaceReturnStackView.addArrangedSubview(spaceButton)
+//
+//        let returnButton = createButton(title: "Return")
+//        returnButton.addTarget(self, action: #selector(returnPressed), for: .touchUpInside)
+//        returnButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)  // set high hugging priority
+//        spaceReturnStackView.addArrangedSubview(returnButton)
+//
+//        view.addSubview(spaceReturnStackView)
+//        stackViews.append(spaceReturnStackView)
     }
 
-    func addButtonToStackView(button: UIButton, stackView: UIStackView) {
+    func addButtonToStackView(button: UIButton, stackView: UIStackView, buttonWidthMultiplier: CGFloat = 1.0) {
         let container = UIView()
         container.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(button)
@@ -94,14 +122,47 @@ class KeyboardViewController: UIInputViewController {
         ])
 
         stackView.addArrangedSubview(container)
+
+        let widthConstraint = container.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: buttonWidthMultiplier)
+        widthConstraint.priority = UILayoutPriority.defaultHigh
+        widthConstraint.isActive = true
     }
+
+//    func addButtonToStackView(button: UIButton, stackView: UIStackView) {
+//        let container = UIView()
+//        container.translatesAutoresizingMaskIntoConstraints = false
+//        container.addSubview(button)
+//
+//        NSLayoutConstraint.activate([
+//            button.topAnchor.constraint(equalTo: container.topAnchor, constant: 4),
+//            button.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4),
+//            button.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 4),
+//            button.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -4)
+//        ])
+//
+//        stackView.addArrangedSubview(container)
+//    }
+
+//    func setupConstraints() {
+//        for (index, stackView) in stackViews.enumerated() {
+//            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+//            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+//            stackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//
+//            if index == 0 {
+//                stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+//            } else {
+//                stackView.topAnchor.constraint(equalTo: stackViews[index-1].bottomAnchor).isActive = true
+//            }
+//        }
+//    }
 
     func setupConstraints() {
         for (index, stackView) in stackViews.enumerated() {
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6).isActive = true
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -6).isActive = true
             stackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-
+            
             if index == 0 {
                 stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
             } else {
