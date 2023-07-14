@@ -64,7 +64,8 @@ class KeyboardViewController: UIInputViewController {
         spaceReturnStackView.distribution = .fill  // change the distribution
         spaceReturnStackView.spacing = 6  // add spacing between buttons
 
-        let switchButton = createButton(title: "Switch")
+//        let switchButton = createButton(title: "Switch")
+        let switchButton = createButtonWithImage(systemName: "globe")
         setupButtonWidth(button: switchButton, width: 60) // Adjust the width to your desired size
         switchButton.addTarget(self, action: #selector(switchPressed), for: .touchUpInside)
         switchButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)  // set high hugging priority
@@ -166,7 +167,7 @@ class KeyboardViewController: UIInputViewController {
 
     func createButtonWithImage(systemName: String) -> UIButton {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: systemName), for: .normal)
+        button.setImage(UIImage(systemName: systemName)?.withRenderingMode(.alwaysOriginal), for: .normal)
 
         button.backgroundColor = UIColor.white
         button.layer.cornerRadius = 5
