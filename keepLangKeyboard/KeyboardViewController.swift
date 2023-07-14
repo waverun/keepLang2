@@ -65,6 +65,7 @@ class KeyboardViewController: UIInputViewController {
         spaceReturnStackView.spacing = 6  // add spacing between buttons
 
         let switchButton = createButton(title: "Switch")
+        setupButtonWidth(button: switchButton, width: 60) // Adjust the width to your desired size
         switchButton.addTarget(self, action: #selector(switchPressed), for: .touchUpInside)
         switchButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)  // set high hugging priority
         spaceReturnStackView.addArrangedSubview(switchButton)
@@ -74,7 +75,8 @@ class KeyboardViewController: UIInputViewController {
         spaceButton.setContentHuggingPriority(.defaultLow, for: .horizontal)  // set low hugging priority
         spaceReturnStackView.addArrangedSubview(spaceButton)
 
-        let returnButton = createButton(title: "Return")
+        let returnButton = createButtonWithImage(systemName: "return.right")
+        setupButtonWidth(button: returnButton, width: 60) // Adjust the width to your desired size
         returnButton.addTarget(self, action: #selector(returnPressed), for: .touchUpInside)
         returnButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)  // set high hugging priority
         spaceReturnStackView.addArrangedSubview(returnButton)
@@ -85,28 +87,6 @@ class KeyboardViewController: UIInputViewController {
         let leadingConstraint = spaceReturnStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 6)
         let trailingConstraint = spaceReturnStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -6)
         NSLayoutConstraint.activate([leadingConstraint, trailingConstraint])
-
-//        let spaceReturnStackView = UIStackView()
-//        spaceReturnStackView.translatesAutoresizingMaskIntoConstraints = false
-//        spaceReturnStackView.distribution = .fill  // change the distribution
-//
-//        let switchButton = createButton(title: "Switch")
-//        switchButton.addTarget(self, action: #selector(switchPressed), for: .touchUpInside)
-//        switchButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)  // set high hugging priority
-//        spaceReturnStackView.addArrangedSubview(switchButton)
-//
-//        let spaceButton = createButton(title: "Space")
-//        spaceButton.addTarget(self, action: #selector(spacePressed), for: .touchUpInside)
-//        spaceButton.setContentHuggingPriority(.defaultLow, for: .horizontal)  // set low hugging priority
-//        spaceReturnStackView.addArrangedSubview(spaceButton)
-//
-//        let returnButton = createButton(title: "Return")
-//        returnButton.addTarget(self, action: #selector(returnPressed), for: .touchUpInside)
-//        returnButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)  // set high hugging priority
-//        spaceReturnStackView.addArrangedSubview(returnButton)
-//
-//        view.addSubview(spaceReturnStackView)
-//        stackViews.append(spaceReturnStackView)
     }
 
     func addButtonToStackView(button: UIButton, stackView: UIStackView, buttonWidthMultiplier: CGFloat = 1.0) {
@@ -127,35 +107,6 @@ class KeyboardViewController: UIInputViewController {
         widthConstraint.priority = UILayoutPriority.defaultHigh
         widthConstraint.isActive = true
     }
-
-//    func addButtonToStackView(button: UIButton, stackView: UIStackView) {
-//        let container = UIView()
-//        container.translatesAutoresizingMaskIntoConstraints = false
-//        container.addSubview(button)
-//
-//        NSLayoutConstraint.activate([
-//            button.topAnchor.constraint(equalTo: container.topAnchor, constant: 4),
-//            button.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4),
-//            button.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 4),
-//            button.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -4)
-//        ])
-//
-//        stackView.addArrangedSubview(container)
-//    }
-
-//    func setupConstraints() {
-//        for (index, stackView) in stackViews.enumerated() {
-//            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-//            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-//            stackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//
-//            if index == 0 {
-//                stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
-//            } else {
-//                stackView.topAnchor.constraint(equalTo: stackViews[index-1].bottomAnchor).isActive = true
-//            }
-//        }
-//    }
 
     func setupConstraints() {
         for (index, stackView) in stackViews.enumerated() {
@@ -213,16 +164,23 @@ class KeyboardViewController: UIInputViewController {
         return button
     }
 
-//    func createButton(title: String) -> UIButton {
-//        let button = UIButton(type: .system)
-//        button.setTitle(title, for: [])
-//        button.backgroundColor = UIColor.white
-//        button.setTitleColor(UIColor.black, for: .normal)
-//        button.layer.cornerRadius = 5
-//        button.layer.masksToBounds = true
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        return button
-//    }
+    func createButtonWithImage(systemName: String) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: systemName), for: .normal)
+
+        button.backgroundColor = UIColor.white
+        button.layer.cornerRadius = 5
+        button.layer.masksToBounds = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        return button
+    }
+
+    func setupButtonWidth(button: UIButton, width: CGFloat) {
+        let widthConstraint = button.widthAnchor.constraint(equalToConstant: width)
+        widthConstraint.priority = UILayoutPriority.defaultHigh // 750, less than required (1000)
+        widthConstraint.isActive = true
+    }
 
     @objc func keyPressed(_ sender: UIButton) {
         guard let key = sender.title(for: []) else { return }
