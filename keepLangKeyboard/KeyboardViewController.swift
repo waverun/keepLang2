@@ -22,6 +22,12 @@ class KeyboardViewController: UIInputViewController {
         "YXCVBNM"
     ].map { $0.lowercased() }
 
+    let specialSymbols = [
+        "~`!@#$%^&*()",
+        "-_=+[{]};:'\"",
+        "<,>.?/|\\"
+    ]
+
     let numbers = "1234567890"
 
     var alphabets = [String]()
@@ -238,6 +244,8 @@ class KeyboardViewController: UIInputViewController {
                 alphabets = hebrewAlphabets
             case alphabets == hebrewAlphabets:
                 alphabets = germanAlphabets
+            case alphabets == germanAlphabets:
+                alphabets = specialSymbols
             default:
                 alphabets = englishAlphabets
         }
@@ -281,7 +289,7 @@ class KeyboardViewController: UIInputViewController {
         }
 
         if sender.state == .began {
-            let actionView = CustomActionView(languages: ["English", "Hebrew", "German"])
+            let actionView = CustomActionView(languages: ["English", "Hebrew", "German", "Special Symbols"])
             actionView.translatesAutoresizingMaskIntoConstraints = false
             actionView.completionHandler = { language in
                 switch language {
@@ -291,6 +299,8 @@ class KeyboardViewController: UIInputViewController {
                         self.alphabets = self.hebrewAlphabets
                     case "German":
                         self.alphabets = self.germanAlphabets
+                    case "Special Symbols":
+                        self.alphabets = self.specialSymbols
                     default:
                         break
                 }
