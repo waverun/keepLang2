@@ -20,7 +20,7 @@ class KeyboardViewController: UIInputViewController {
         "QWERTZUIOPÜ",
         "ASDFGHJKLÖÄ",
         "YXCVBNM"
-    ]
+    ].map { $0.lowercased() } 
 
     let numbers = "1234567890"
 
