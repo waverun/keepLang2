@@ -20,7 +20,7 @@ class KeyboardViewController: UIInputViewController {
         "QWERTZUIOPÜ",
         "ASDFGHJKLÖÄ",
         "YXCVBNM"
-    ].map { $0.lowercased() } 
+    ].map { $0.lowercased() }
 
     let numbers = "1234567890"
 
@@ -99,11 +99,12 @@ class KeyboardViewController: UIInputViewController {
         spaceReturnStackView.distribution = .fill  // change the distribution
         spaceReturnStackView.spacing = 6  // add spacing between buttons
 
-//        let switchButton = createButton(title: "Switch")
         let switchButton = createButtonWithImage(systemName: "globe")
         setupButtonWidth(button: switchButton, width: 60) // Adjust the width to your desired size
         switchButton.addTarget(self, action: #selector(switchPressed), for: .touchUpInside)
         switchButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)  // set high hugging priority
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(switchLongPressed))
+        switchButton.addGestureRecognizer(longPressGestureRecognizer)
         spaceReturnStackView.addArrangedSubview(switchButton)
 
         let spaceButton = createButton(title: "Space")
@@ -258,4 +259,56 @@ class KeyboardViewController: UIInputViewController {
         setupKeyboard()
         setupConstraints()
     }
+
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        if let actionView = self.view.subviews.first(where: { $0 is CustomActionView }) {
+            let location = sender.location(in: self.view)
+            if !actionView.frame.contains(location) {
+                actionView.removeFromSuperview()
+                if let recognizer = self.view.gestureRecognizers?.first(where: { $0.name == "TapToRemoveActionView" }) {
+                    self.view.removeGestureRecognizer(recognizer)
+                }
+            }
+        }
+    }
+
+    @objc func switchLongPressed(_ sender: UILongPressGestureRecognizer) {
+        func addTapView() {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+            tap.cancelsTouchesInView = false  // Allow other button actions to be triggered
+            self.view.addGestureRecognizer(tap)
+            tap.name = "TapToRemoveActionView"
+        }
+
+        if sender.state == .began {
+            let actionView = CustomActionView(languages: ["English", "Hebrew", "German"])
+            actionView.translatesAutoresizingMaskIntoConstraints = false
+            actionView.completionHandler = { language in
+                switch language {
+                    case "English":
+                        self.alphabets = self.englishAlphabets
+                    case "Hebrew":
+                        self.alphabets = self.hebrewAlphabets
+                    case "German":
+                        self.alphabets = self.germanAlphabets
+                    default:
+                        break
+                }
+                actionView.removeFromSuperview()
+                self.setupKeyboard()
+                self.setupConstraints()
+            }
+
+            self.view.addSubview(actionView)
+            addTapView()
+
+            NSLayoutConstraint.activate([
+                actionView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                actionView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+                actionView.widthAnchor.constraint(equalToConstant: 200),
+                actionView.heightAnchor.constraint(equalToConstant: 150)
+            ])
+        }
+    }
+
 }
