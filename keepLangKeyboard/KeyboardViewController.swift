@@ -42,6 +42,58 @@ class KeyboardViewController: UIInputViewController {
         }
     }
 
+    // MARK: - Move cursor:
+
+    func addGesttureRecognizers(spaceButton: UIButton) {
+        // Add a long press gesture recognizer to the space bar
+        let spaceButtonLongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleSpaceButtonLongPress(_:)))
+        spaceButtonLongPressGestureRecognizer.minimumPressDuration = 0.5
+        spaceButton.addGestureRecognizer(spaceButtonLongPressGestureRecognizer)
+
+        // Add a pan gesture recognizer to handle cursor movement
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+        view.addGestureRecognizer(panGestureRecognizer)
+    }
+
+    @objc func handleSpaceButtonLongPress(_ recognizer: UILongPressGestureRecognizer) {
+        // Here, hide your keyboard buttons when long press starts
+        if recognizer.state == .began {
+            for stackView in stackViews {
+                stackView.isHidden = true
+            }
+        }
+        // Here, unhide your keyboard buttons when long press ends
+        else if recognizer.state == .ended || recognizer.state == .cancelled {
+            for stackView in stackViews {
+                stackView.isHidden = false
+            }
+        }
+    }
+
+    @objc func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
+        // Here, move the cursor according to the pan gesture's movement
+        if recognizer.state == .changed {
+            let translation = recognizer.translation(in: view)
+            let cursorMovement = translation.x / 4 // Adjust this value to your needs
+
+            // Calculate cursor movement based on translation
+            let isMovingLeft = cursorMovement < 0
+            let numberOfMovements = abs(Int(cursorMovement))
+
+            for _ in 0..<numberOfMovements {
+                if isMovingLeft {
+                    textDocumentProxy.adjustTextPosition(byCharacterOffset: -1)
+                } else {
+                    textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
+                }
+            }
+
+            recognizer.setTranslation(.zero, in: view) // Reset the pan gesture's translation
+        }
+    }
+
+    // MARK: - Controller functions:
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -117,6 +169,7 @@ class KeyboardViewController: UIInputViewController {
         spaceButton.addTarget(self, action: #selector(spacePressed), for: .touchUpInside)
         spaceButton.setContentHuggingPriority(.defaultLow, for: .horizontal)  // set low hugging priority
         spaceReturnStackView.addArrangedSubview(spaceButton)
+        addGesttureRecognizers(spaceButton: spaceButton)
 
         let returnButton = createButtonWithImage(systemName: "return.right")
         setupButtonWidth(button: returnButton, width: 60) // Adjust the width to your desired size
