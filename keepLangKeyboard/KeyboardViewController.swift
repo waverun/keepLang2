@@ -22,8 +22,21 @@ class KeyboardViewController: UIInputViewController {
     var stackViews = [UIStackView]()
     var shiftMode = false
 
+    func isOpenAccessGranted() -> Bool {
+        if #available(iOS 11.0, *) {
+            return UIPasteboard.general.hasStrings
+        } else {
+            return UIPasteboard.general.isKind(of: UIPasteboard.self)
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        switch true {
+            case isOpenAccessGranted(): print("Full access")
+            default: print("No full access")
+        }
 
         alphabets = englishAlphabets // Default to English keyboard
 
@@ -31,6 +44,21 @@ class KeyboardViewController: UIInputViewController {
         self.inputView?.addConstraint(NSLayoutConstraint(item: self.inputView!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 270))
 
         setupKeyboard()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        let previousText = textDocumentProxy.documentContextBeforeInput ?? ""
+
+        let followingText = textDocumentProxy.documentContextAfterInput ?? ""
+
+        if let language = detectLanguage(text: previousText + followingText) {
+            switch language {
+                case "he": alphabets = hebrewAlphabets
+                default: alphabets = englishAlphabets
+            }
+            setupKeyboard()
+            setupConstraints()
+        }
     }
 
     override func updateViewConstraints() {

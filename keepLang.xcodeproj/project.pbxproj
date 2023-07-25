@@ -13,6 +13,7 @@
 		5029992B2A5F371300F395A2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5029992A2A5F371300F395A2 /* Preview Assets.xcassets */; };
 		502999382A5F374600F395A2 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502999372A5F374600F395A2 /* KeyboardViewController.swift */; };
 		5029993C2A5F374600F395A2 /* keepLangKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 502999352A5F374600F395A2 /* keepLangKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5097677A2A6FE88E00D775F0 /* detectLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509767792A6FE88E00D775F0 /* detectLanguage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,8 @@
 		502999352A5F374600F395A2 /* keepLangKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keepLangKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		502999372A5F374600F395A2 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		502999392A5F374600F395A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		509767782A6FD54D00D775F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		509767792A6FE88E00D775F0 /* detectLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = detectLanguage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +92,7 @@
 		502999222A5F371100F395A2 /* keepLang */ = {
 			isa = PBXGroup;
 			children = (
+				509767782A6FD54D00D775F0 /* Info.plist */,
 				502999232A5F371100F395A2 /* keepLangApp.swift */,
 				502999252A5F371100F395A2 /* ContentView.swift */,
 				502999272A5F371300F395A2 /* Assets.xcassets */,
@@ -109,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				502999372A5F374600F395A2 /* KeyboardViewController.swift */,
+				509767792A6FE88E00D775F0 /* detectLanguage.swift */,
 				502999392A5F374600F395A2 /* Info.plist */,
 			);
 			path = keepLangKeyboard;
@@ -223,6 +228,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5097677A2A6FE88E00D775F0 /* detectLanguage.swift in Sources */,
 				502999382A5F374600F395A2 /* KeyboardViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -364,6 +370,7 @@
 				DEVELOPMENT_TEAM = NRTGJB9J65;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = keepLang/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -394,6 +401,7 @@
 				DEVELOPMENT_TEAM = NRTGJB9J65;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = keepLang/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
