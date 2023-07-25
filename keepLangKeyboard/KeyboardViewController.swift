@@ -16,6 +16,12 @@ class KeyboardViewController: UIInputViewController {
         "זסבהנמצתץ"
     ]
 
+    let germanAlphabets = [
+        "QWERTZUIOPÜ",
+        "ASDFGHJKLÖÄ",
+        "YXCVBNM"
+    ]
+
     let numbers = "1234567890"
 
     var alphabets = [String]()
@@ -54,6 +60,7 @@ class KeyboardViewController: UIInputViewController {
         if let language = detectLanguage(text: previousText + followingText) {
             switch language {
                 case "he": alphabets = hebrewAlphabets
+                case "de": alphabets = germanAlphabets
                 default: alphabets = englishAlphabets
             }
             setupKeyboard()
@@ -225,10 +232,13 @@ class KeyboardViewController: UIInputViewController {
     }
 
     @objc func switchPressed() {
-        if alphabets == englishAlphabets {
-            alphabets = hebrewAlphabets
-        } else {
-            alphabets = englishAlphabets
+        switch true {
+            case alphabets == englishAlphabets:
+                alphabets = hebrewAlphabets
+            case alphabets == hebrewAlphabets:
+                alphabets = germanAlphabets
+            default:
+                alphabets = englishAlphabets
         }
 
         setupKeyboard()
