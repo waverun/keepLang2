@@ -28,7 +28,11 @@ class KeyboardViewController: UIInputViewController {
         "<,>.?/|\\"
     ]
 
+//    var spaceButtonLongPressGestureRecognizer: UILongPressGestureRecognizer!
+
     let numbers = "1234567890"
+
+    var buttons: [UIButton] = []
 
     var alphabets = [String]()
     var stackViews = [UIStackView]()
@@ -44,51 +48,74 @@ class KeyboardViewController: UIInputViewController {
 
     // MARK: - Move cursor:
 
-    func addGesttureRecognizers(spaceButton: UIButton) {
+    func addPanGesttureRecognizer(spaceButton: UIButton) {
         // Add a long press gesture recognizer to the space bar
-        let spaceButtonLongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleSpaceButtonLongPress(_:)))
-        spaceButtonLongPressGestureRecognizer.minimumPressDuration = 0.5
-        spaceButton.addGestureRecognizer(spaceButtonLongPressGestureRecognizer)
+//        spaceButtonLongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleSpaceButtonLongPress(_:)))
+//        spaceButtonLongPressGestureRecognizer.minimumPressDuration = 0.5
+//        spaceButton.addGestureRecognizer(spaceButtonLongPressGestureRecognizer)
 
         // Add a pan gesture recognizer to handle cursor movement
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
         view.addGestureRecognizer(panGestureRecognizer)
     }
+//
+//    @objc func handleSpaceButtonLongPress(_ recognizer: UILongPressGestureRecognizer) {
+//        // Here, hide your keyboard buttons when long press starts
+////        spaceButtonLongPressGestureRecognizer.cancelsTouchesInView = true
+////        view.removeGestureRecognizer(spaceButtonLongPressGestureRecognizer)
+////        view.addGestureRecognizer(panGestureRecognizer)
+//        switch recognizer.state {
+//            case .began:
+//                //            for stackView in stackViews {
+//                //                stackView.isHidden = true
+//                //            }
+//                changeButtonsAlpha(alpha: 0)
+//
+//                // Here, unhide your keyboard buttons when long press ends
+//            case .ended:
+//                //            for stackView in stackViews {
+//                //                stackView.isHidden = false
+//                //            }
+//                changeButtonsAlpha(alpha: 1)
+////                spaceButtonLongPressGestureRecognizer.cancelsTouchesInView = false
+//            case .cancelled:
+//                changeButtonsAlpha(alpha: 1)
+////                spaceButtonLongPressGestureRecognizer.cancelsTouchesInView = false
+//            default: break
+//        }
+//    }
 
-    @objc func handleSpaceButtonLongPress(_ recognizer: UILongPressGestureRecognizer) {
-        // Here, hide your keyboard buttons when long press starts
-        if recognizer.state == .began {
-            for stackView in stackViews {
-                stackView.isHidden = true
-            }
-        }
-        // Here, unhide your keyboard buttons when long press ends
-        else if recognizer.state == .ended || recognizer.state == .cancelled {
-            for stackView in stackViews {
-                stackView.isHidden = false
-            }
+    func changeButtonsAlpha(alpha: CGFloat) {
+        for button in buttons {
+            let currentColor = button.titleColor(for: .normal)
+            let transparentColor = currentColor?.withAlphaComponent(alpha) // Set the opacity to your needs
+            button.setTitleColor(transparentColor, for: .normal)
         }
     }
 
     @objc func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
-        // Here, move the cursor according to the pan gesture's movement
-        if recognizer.state == .changed {
-            let translation = recognizer.translation(in: view)
-            let cursorMovement = translation.x / 4 // Adjust this value to your needs
+        switch recognizer.state {
+            case .began:
+                changeButtonsAlpha(alpha: 0)
+            case .changed:
+                let translation = recognizer.translation(in: view)
+                let cursorMovement = translation.x / 2 // Adjust this value to your needs
 
-            // Calculate cursor movement based on translation
-            let isMovingLeft = cursorMovement < 0
-            let numberOfMovements = abs(Int(cursorMovement))
+                // Calculate cursor movement based on translation
+                let isMovingLeft = cursorMovement < 0
+                let numberOfMovements = abs(Int(cursorMovement))
 
-            for _ in 0..<numberOfMovements {
-                if isMovingLeft {
-                    textDocumentProxy.adjustTextPosition(byCharacterOffset: -1)
-                } else {
-                    textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
+                for _ in 0..<numberOfMovements {
+                    if isMovingLeft {
+                        textDocumentProxy.adjustTextPosition(byCharacterOffset: -1)
+                    } else {
+                        textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
+                    }
                 }
-            }
-
-            recognizer.setTranslation(.zero, in: view) // Reset the pan gesture's translation
+                recognizer.setTranslation(.zero, in: view) // Reset the pan gesture's translation
+            case .ended:
+                changeButtonsAlpha(alpha: 1)
+            default: break
         }
     }
 
@@ -135,7 +162,9 @@ class KeyboardViewController: UIInputViewController {
         for stackView in stackViews {
             stackView.removeFromSuperview()
         }
+
         stackViews.removeAll()
+        buttons.removeAll()
 
         for row in alphabets {
             let stackView = createStackView(with: Array(row))
@@ -169,7 +198,7 @@ class KeyboardViewController: UIInputViewController {
         spaceButton.addTarget(self, action: #selector(spacePressed), for: .touchUpInside)
         spaceButton.setContentHuggingPriority(.defaultLow, for: .horizontal)  // set low hugging priority
         spaceReturnStackView.addArrangedSubview(spaceButton)
-        addGesttureRecognizers(spaceButton: spaceButton)
+        addPanGesttureRecognizer(spaceButton: spaceButton)
 
         let returnButton = createButtonWithImage(systemName: "return.right")
         setupButtonWidth(button: returnButton, width: 60) // Adjust the width to your desired size
@@ -185,24 +214,24 @@ class KeyboardViewController: UIInputViewController {
         NSLayoutConstraint.activate([leadingConstraint, trailingConstraint])
     }
 
-    func addButtonToStackView(button: UIButton, stackView: UIStackView, buttonWidthMultiplier: CGFloat = 1.0) {
-        let container = UIView()
-        container.translatesAutoresizingMaskIntoConstraints = false
-        container.addSubview(button)
-
-        NSLayoutConstraint.activate([
-            button.topAnchor.constraint(equalTo: container.topAnchor, constant: 4),
-            button.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4),
-            button.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 4),
-            button.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -4)
-        ])
-
-        stackView.addArrangedSubview(container)
-
-        let widthConstraint = container.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: buttonWidthMultiplier)
-        widthConstraint.priority = UILayoutPriority.defaultHigh
-        widthConstraint.isActive = true
-    }
+//    func addButtonToStackView(button: UIButton, stackView: UIStackView, buttonWidthMultiplier: CGFloat = 1.0) {
+//        let container = UIView()
+//        container.translatesAutoresizingMaskIntoConstraints = false
+//        container.addSubview(button)
+//
+//        NSLayoutConstraint.activate([
+//            button.topAnchor.constraint(equalTo: container.topAnchor, constant: 4),
+//            button.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4),
+//            button.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 4),
+//            button.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -4)
+//        ])
+//
+//        stackView.addArrangedSubview(container)
+//
+//        let widthConstraint = container.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: buttonWidthMultiplier)
+//        widthConstraint.priority = UILayoutPriority.defaultHigh
+//        widthConstraint.isActive = true
+//    }
 
     func setupConstraints() {
         for (index, stackView) in stackViews.enumerated() {
@@ -256,6 +285,8 @@ class KeyboardViewController: UIInputViewController {
 
         // Set a larger font size for the button title
         button.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+
+        buttons.append(button)
 
         return button
     }
