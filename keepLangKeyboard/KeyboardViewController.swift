@@ -63,18 +63,37 @@ class KeyboardViewController: UIInputViewController {
     }
 
     @objc func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
+        let maxVelocity: CGFloat = 1000  // Define your max velocity
+
         switch recognizer.state {
             case .began:
                 changeButtonsAlpha(alpha: 0)
                 vibrate()
             case .changed:
-                let translation = recognizer.translation(in: view)
-                let cursorMovement = translation.x / 2 // Adjust this value to your needs
+//                let translation = recognizer.translation(in: view)
+                let velocity = recognizer.velocity(in: view)
+                let currentVelocity = hypot(velocity.x, velocity.y)  // Get the magnitude of the velocity vector
+
+                // Calculate a scale factor based on the current velocity.
+                // The slower the movement (smaller velocity), the larger the scale.
+                let scaleFactor = maxVelocity / (currentVelocity + 50)  // The "+ 50" prevents division by zero
+
+                // Get the original translation
+                var translation = recognizer.translation(in: view)
+
+                // Apply the scale factor to the translation
+                translation.x *= scaleFactor
+                translation.y *= scaleFactor
+
+                let cursorMovement = translation.x / 11 // Adjust this value to your needs
 
                 // Calculate cursor movement based on translation
                 let isMovingLeft = cursorMovement < 0
                 let numberOfMovements = abs(Int(cursorMovement))
-
+                print("handlePanGesture: changed: x: \(translation.x) numberOfMovements: \(numberOfMovements)")
+                if numberOfMovements > 0 {
+                    recognizer.setTranslation(.zero, in: view)
+                }
                 for _ in 0..<numberOfMovements {
                     if isMovingLeft {
                         textDocumentProxy.adjustTextPosition(byCharacterOffset: -1)
