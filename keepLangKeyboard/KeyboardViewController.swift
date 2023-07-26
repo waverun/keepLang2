@@ -49,41 +49,9 @@ class KeyboardViewController: UIInputViewController {
     // MARK: - Move cursor:
 
     func addPanGesttureRecognizer(spaceButton: UIButton) {
-        // Add a long press gesture recognizer to the space bar
-//        spaceButtonLongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleSpaceButtonLongPress(_:)))
-//        spaceButtonLongPressGestureRecognizer.minimumPressDuration = 0.5
-//        spaceButton.addGestureRecognizer(spaceButtonLongPressGestureRecognizer)
-
-        // Add a pan gesture recognizer to handle cursor movement
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
         view.addGestureRecognizer(panGestureRecognizer)
     }
-//
-//    @objc func handleSpaceButtonLongPress(_ recognizer: UILongPressGestureRecognizer) {
-//        // Here, hide your keyboard buttons when long press starts
-////        spaceButtonLongPressGestureRecognizer.cancelsTouchesInView = true
-////        view.removeGestureRecognizer(spaceButtonLongPressGestureRecognizer)
-////        view.addGestureRecognizer(panGestureRecognizer)
-//        switch recognizer.state {
-//            case .began:
-//                //            for stackView in stackViews {
-//                //                stackView.isHidden = true
-//                //            }
-//                changeButtonsAlpha(alpha: 0)
-//
-//                // Here, unhide your keyboard buttons when long press ends
-//            case .ended:
-//                //            for stackView in stackViews {
-//                //                stackView.isHidden = false
-//                //            }
-//                changeButtonsAlpha(alpha: 1)
-////                spaceButtonLongPressGestureRecognizer.cancelsTouchesInView = false
-//            case .cancelled:
-//                changeButtonsAlpha(alpha: 1)
-////                spaceButtonLongPressGestureRecognizer.cancelsTouchesInView = false
-//            default: break
-//        }
-//    }
 
     func changeButtonsAlpha(alpha: CGFloat) {
         for button in buttons {
@@ -206,6 +174,11 @@ class KeyboardViewController: UIInputViewController {
         returnButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)  // set high hugging priority
         spaceReturnStackView.addArrangedSubview(returnButton)
 
+        let deleteButton = createButtonWithImage(systemName: "delete." + (alphabets == hebrewAlphabets ? "right" : "left"))
+        deleteButton.addTarget(self, action: #selector(deletePressed), for: .touchUpInside)
+        let deleteKeyRow = shortestRowInd()
+        stackViews[deleteKeyRow].insertArrangedSubview(deleteButton, at: stackViews[deleteKeyRow].arrangedSubviews.count)
+
         view.addSubview(spaceReturnStackView)
         stackViews.append(spaceReturnStackView)
 
@@ -214,24 +187,29 @@ class KeyboardViewController: UIInputViewController {
         NSLayoutConstraint.activate([leadingConstraint, trailingConstraint])
     }
 
-//    func addButtonToStackView(button: UIButton, stackView: UIStackView, buttonWidthMultiplier: CGFloat = 1.0) {
-//        let container = UIView()
-//        container.translatesAutoresizingMaskIntoConstraints = false
-//        container.addSubview(button)
-//
-//        NSLayoutConstraint.activate([
-//            button.topAnchor.constraint(equalTo: container.topAnchor, constant: 4),
-//            button.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4),
-//            button.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 4),
-//            button.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -4)
-//        ])
-//
-//        stackView.addArrangedSubview(container)
-//
-//        let widthConstraint = container.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: buttonWidthMultiplier)
-//        widthConstraint.priority = UILayoutPriority.defaultHigh
-//        widthConstraint.isActive = true
-//    }
+    func shortestRowInd() -> Int {
+        var smallestRowInd = 0
+        var shortestCount = Int.max
+
+        for (index, row) in stackViews.enumerated() {
+//            var totalArrangedSubviews = 0
+//            for stackView in row {
+//                totalArrangedSubviews += stackView.arrangedSubviews.count
+//            }
+
+            let totalArrangedSubviews = row.arrangedSubviews.count
+            if  totalArrangedSubviews < shortestCount {
+                shortestCount = totalArrangedSubviews
+                smallestRowInd = index
+            }
+        }
+
+        return smallestRowInd
+    }
+
+    @objc func deletePressed() {
+        (textDocumentProxy as UIKeyInput).deleteBackward()
+    }
 
     func setupConstraints() {
         for (index, stackView) in stackViews.enumerated() {
@@ -404,5 +382,4 @@ class KeyboardViewController: UIInputViewController {
             ])
         }
     }
-
 }
