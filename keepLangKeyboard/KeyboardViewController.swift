@@ -1,4 +1,5 @@
 import UIKit
+import AudioToolbox
 
 class KeyboardViewController: UIInputViewController {
 
@@ -28,7 +29,7 @@ class KeyboardViewController: UIInputViewController {
         "<,>.?/|\\"
     ]
 
-//    var spaceButtonLongPressGestureRecognizer: UILongPressGestureRecognizer!
+//    let generator = UIImpactFeedbackGenerator(style: .heavy)
 
     let numbers = "1234567890"
 
@@ -65,6 +66,7 @@ class KeyboardViewController: UIInputViewController {
         switch recognizer.state {
             case .began:
                 changeButtonsAlpha(alpha: 0)
+                vibrate()
             case .changed:
                 let translation = recognizer.translation(in: view)
                 let cursorMovement = translation.x / 2 // Adjust this value to your needs
@@ -124,6 +126,15 @@ class KeyboardViewController: UIInputViewController {
     override func updateViewConstraints() {
         setupConstraints()
         super.updateViewConstraints()
+    }
+
+    func vibrate() {
+        //        DispatchQueue.main.async { [weak self] in
+        //        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        //        generator.prepare()
+        //            self?.generator.impactOccurred()
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        //        }
     }
 
     func setupKeyboard() {
@@ -192,11 +203,6 @@ class KeyboardViewController: UIInputViewController {
         var shortestCount = Int.max
 
         for (index, row) in stackViews.enumerated() {
-//            var totalArrangedSubviews = 0
-//            for stackView in row {
-//                totalArrangedSubviews += stackView.arrangedSubviews.count
-//            }
-
             let totalArrangedSubviews = row.arrangedSubviews.count
             if  totalArrangedSubviews < shortestCount {
                 shortestCount = totalArrangedSubviews
